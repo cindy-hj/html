@@ -7,30 +7,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>메인</title>
     <style>
-        .container{
-            width: 700px; /* 가로 */
-            height: 200px;  /* 높이 */
-            border: 1px solid #cccccc; /* 테두리선, 1, 실선 */ 
-            margin: 0px auto 0px auto; /* 중앙정렬 위, 오, 아, 왼 */
-            background-color: #fffad0; /* 배경색 */
-            padding: 30px;
+        .container {
+           display  : grid;
+           padding  : 10px;
+           grid-template-areas: 
+            'header header header header header'
+            'side_a content content content side_b'
+            'footer footer footer footer footer';
         }
+
+        .header {
+            grid-area   : header;
+            border      : 1px solid #cccccc;
+            text-align  : center;
+            padding     : 30px;
+        }
+
+        .sidebar_a {
+            height: 200px;
+            grid-area   : side_a;
+            border      : 1px solid #cccccc;
+        }
+
+        .content {
+            grid-area   : content;
+            border      : 1px solid #cccccc;
+        }
+
+        .sidebar_b {
+            grid-area   : side_b;
+            border      : 1px solid #cccccc;
+        }        
+
+        .footer {
+            grid-area   : footer;
+            border      : 1px solid #cccccc;
+            text-align  : center;
+            padding     : 30px;
+        }
+
     </style>
 </head>
 
 <body>
     
     <div class="container">
-        <h3>홈화면</h3>
-        <hr />
-        <a href="/login.html">로그인으로 이동</a>
-        <a href="/join.html">회원가입으로 이동</a>
+        <div class="header">header</div>
+
+        <div class="sidebar_a">
+            <a href="/login.html"><button>로그인</button></a><br />
+            <a href="/join.html"><button>회원가입</button></a><br />
+            <a href="/admin.html"><button>관리자</button></a><br />
+        </div>
+
+        <div class="content">content</div>
+        <div class="sidebar_b">sidebar_b</div>
+
+        <div class="footer">footer</div>
     </div>
 
-    <div class="container">
-        <h3>홈화면</h3>
-    </div>
-
+ 
  
 </body>
 

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>grid예제</title>
+    <style>
+        .container {
+            width   : 900px ; /* 가로길이 */
+            margin  : 0px auto ; /* 중앙정렬 */
+            border  : 1px solid #d6f9d5;
+        }
+
+        .grid {
+            display                 : grid ;
+            grid-template-columns   : 200px 200px 500px;
+            grid-template-rows      : 200px 200px 200px;
+        }
+
+        .item {
+            border  : 1px solid #cccccc;
+        }
+
+        .item:nth-child(1){
+            grid-column-start: 1;
+            grid-column-end: 3;
+        }
+
+        .item:nth-child(3) {
+            padding: 30px;
+            background-color: #daff38;
+        }
+
+        .item:nth-child(8) {
+            padding: 50px;
+            background-color: #ffe343;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="grid">
+            <div class="item">A</div>
+            <div class="item">B</div>
+            <div class="item">C</div>
+            <div class="item">D</div>
+            <div class="item">E</div>
+            <div class="item">F</div>
+            <div class="item">G</div>
+            <div class="item">H</div>
+        </div>
+    </div>
+</body>
+</html>
