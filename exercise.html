@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=d, initial-scale=1.0">
+    <title>실습</title>
+
+    <style>
+
+        .container {
+            width   : 900px ;
+            margin  : 0px auto ;
+        }
+    
+        .grid {
+            display              : grid ; 
+            grid-template-columns: 200px 500px 200px ;
+            grid-template-rows   : 200px 400px 200px ;
+        }
+    
+        .item {
+            border : 1px solid rgba(135, 207, 235, 0.219) ;
+        }
+
+        .item:nth-child(1) {
+            grid-column-start   : 1;
+            grid-column-end     : 4;
+        }
+
+        .item:nth-child(5) {
+            grid-column-start   : 1;
+            grid-column-end     : 4;
+        }
+
+        .item:nth-child(2) {
+            padding     : 30px ;
+        }
+
+        </style>
+    
+</head>
+
+
+<body>
+
+    <div class="container">
+        <div class="grid">
+            <div class="item">header</div>
+            <div class="item">
+                <a href="/login.html"><button>로그인</button></a> <br />
+                <a href="/join.html"><button style="margin-top: 10px;">회원가입</button></a> <br />
+                <a href="/admin.html"><button style="margin-top: 10px;">관리자</button></a>
+            </div>
+            <div class="item">content</div>
+            <div class="item">sidebar_b</div>
+            <div class="item">footer</div>
+        </div>
+    </div>
+</body>
+</html>
