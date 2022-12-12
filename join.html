@@ -19,22 +19,22 @@
 
         <div style="margin-bottom: 10px;">
             <label class="lbl">아이디</label>
-            <input type="text" placeholder="아이디를 입력하세요." />
+            <input type="text" placeholder="아이디를 입력하세요." id="nickname"/>
         </div>
 
         <div style="margin-bottom: 10px;">
             <label class="lbl">암호</label>
-            <input type="password" placeholder="암호를 입력하세요.">
+            <input type="password" placeholder="암호를 입력하세요." id="password">
         </div>
 
         <div style="margin-bottom: 10px;">
             <label class="lbl">암호 확인</label>
-            <input type="password" placeholder="암호를 다시 입력하세요.">
+            <input type="password" placeholder="암호를 다시 입력하세요." id="repassword">
         </div>
 
         <div style="margin-bottom: 10px;">
             <label class="lbl">이름</label>
-            <input type="text" placeholder="이름을 입력하세요.">
+            <input type="text" placeholder="이름을 입력하세요." id="name">
         </div>
 
         <div style="margin-bottom: 10px;">
@@ -48,13 +48,13 @@
 
         <div style="margin-bottom: 10px;">       
             <label class="lbl">성별</label>
-            <input type="radio" name="gender"/>남
-            <input type="radio" name="gender"/>여
+            <input type="radio" name="gender" />남
+            <input type="radio" name="gender" />여
         </div>
 
         <div style="margin-bottom: 10px;">
             <label class="lbl">이메일</label>
-            <input type="text" placeholder="이메일" />
+            <input type="text" placeholder="이메일" id="email"/>
             <label>@</label>
             <select>
                 <option>naver.com</option>
@@ -90,13 +90,53 @@
 
         <div style="margin-top: 30px;">
             <label class="lbl"></label> 
-            <button>회원가입</button>
+            <button onclick="func()">회원가입</button>
              <a href="/login.html"><button>로그인</button></a>
              <a href="/main.html"><button>홈으로</button></a>
         </div>
-
-
     </div>
     
+    <script>
+        const ni = document.getElementById('nickname');
+        console.log(ni);
+
+        const pa = document.getElementById('password');
+        console.log(pa);
+
+        const re = document.getElementById('repassword');
+        console.log(re);
+        
+        const na = document.getElementById('name');
+        console.log(na);
+
+        function func() {
+            if(ni.value === '') {
+                alert('아이디를 입력하세요.');
+                ni.focus();
+                return false;
+            }
+
+            if(pa.value === '') {
+                alert('비밀번호를 입력하세요.');
+                pa.focus();
+                return false;
+            }
+
+            if(re.value === '') {
+                alert('비밀번호를 다시 입력하세요.')
+                re.focus();
+                return false;
+            }
+
+            if(na.value === '') {
+                alert('이름을 입력하세요.')
+                na.focus();
+                return false;
+            }
+
+            alert('회원 가입 성공')
+        }
+    </script>
+
 </body>
 </html>

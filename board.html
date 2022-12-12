@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 목록</title>
+
+    <style>
+        .container {
+            width: 800px;
+            border: 3px solid #cccccc;
+            margin: 0px auto;
+            padding: 15px;
+        }
+
+        table {
+            width   : 100%;
+        }
+        /* 태그명 그대로, "."클래스로 "#"아이디 */
+    </style>
+</head>
+
+<body>
+    <div class="container" style="text-align: center;">
+        <h3>게시판 목록</h3>
+        <hr />
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>조회수</th>
+                    <th>날짜</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <tr>
+                    <td>1</td>
+                    <td>aaa</td>
+                    <td>bbb</td>
+                    <td>1</td>
+                    <td>2022-12-12</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>aaa</td>
+                    <td>bbb</td>
+                    <td>1</td>
+                    <td>2022-12-12</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>aaa</td>
+                    <td>bbb</td>
+                    <td>1</td>
+                    <td>2022-12-12</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        /* 생명주기 onMounted 될때 수행되게 함 */
+        /* 백엔드로 전달, 받기는 모두 script만 가능 */
+    
+        const a ='124'; /* 변수 문자를 보관 */
+        console.log(a); //문자 124가 출력
+
+        /* 변수 객체를 보관 */
+        const obj = {
+            no      : 4, 
+            title   : 'aaa', 
+            writer  : 'bbb', 
+            hit     : 5, 
+            regdate : '2022-12-12'
+        };
+        console.log(obj); /* 객체 전체 출력 */
+        console.log(obj.title); /* 객체 내부의 제목만 출력함 */
+        console.log(obj['title']); /* 위와 동일 방식 */
+        console.log(obj.regdate);
+
+        //태그 중에서 아이디가 tbody인것 찾기
+        const tb = document.getElementById('tbody');
+                
+        //찾은 태그에 html 태그를 추가하기 ( += )
+        tb.innerHTML +=
+                `<tr>` +
+                    `<td>${obj.no}</td>` +
+                    `<td>${obj.title}</td>` +
+                    `<td>${obj.writer}</td>` +
+                    `<td>${obj.hit}</td>` +
+                    `<td>${obj.regdate}</td>` +
+                '</tr>';
+    </script>
+
+
+
+</body>
+
+
+</html>

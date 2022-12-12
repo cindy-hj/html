@@ -42,22 +42,45 @@
 
         <div style="margin-bottom: 10px;"> 
             <label style="display:inline-block; width:100px">아이디</label>
-            <input type="text" />
+            <input type="text" id="nickname"/>
         </div>
 
         <div style="margin-bottom: 10px;">
             <label style="display:inline-block; width:100px">암호</label>
-            <input type="password" />
+            <input type="password" id="password"/>
         </div>
 
         <div style="margin-bottom: 10px;">
             <label style="display:inline-block; width:100px"></label>
-            <button>로그인</button>
+            <button onclick="func()">로그인</button>
             <a href="/join.html"><button>회원가입</button></a>
             <a href="/main.html"><button>홈으로</button></a>
         </div>
-
     </div>
+
+
+    <script>
+        const ni = document.getElementById('nickname');
+        console.log(ni);
+
+        const pa = document.getElementById('password');
+        console.log(pa);
+
+      function func()  {
+            if(ni.value === ''){
+                alert('아이디를 입력하세요.');
+                ni.focus();
+                return false;
+            }
+
+            if(pa.value === ''){
+                alert('비밀번호를 입력하세요.');
+                pa.focus();
+                return false;
+            }
+        }
+    </script>
+
 
 </body>
 
