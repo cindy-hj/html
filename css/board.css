@@ -1,0 +1,25 @@
+.container {
+    width   : 600px;
+    margin  : 0px auto; 
+    border  : 3px solid #cccccc;
+    padding : 15px;
+}
+
+.grid {
+    display : grid;
+    grid-template-columns: 100px auto;
+    /* grid-template-rows: 100px; 높이 설정 */
+}
+
+.item {
+    border  : 0px solid #ffe81c;
+    margin : 5px;
+}
+
+.item:nth-child(1) {
+    justify-self: center; /* start end center */
+}
+
+.item:nth-child(3) {
+    align-self: center; /* start end center */
+}

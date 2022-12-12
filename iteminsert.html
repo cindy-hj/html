@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>물품등록</title>
+    <style>
+        .container {
+            width   : 600px;
+            margin  : 0px auto; 
+            border  : 3px solid #cccccc;
+            padding : 15px;
+        }
+
+        .lbl {
+            display : inline-block;
+            width   : 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h3>물품등록</h3>
+        <hr />
+
+        <div>
+            <label class="lbl">물품명</label>
+            <input type="text" class="input" placeholder="물품명" />
+        </div>
+
+        <div>
+            <label class="lbl">가격</label>
+            <input type="text" class="input" placeholder="가격" />
+        </div>
+
+        <div>
+            <label class="lbl">수량</label>
+            <input type="text" class="input" placeholder="수량" />
+        </div>
+
+        <div>
+            <label class="lbl">이미지</label>
+            <img src="imgs/noimage.png" id="img" style="height:100px" />
+            <input type="file" onchange="handleImage(this)" />
+        
+        </div>
+
+        <div>
+            <label class="lbl"></label>
+            <button onclick="handleInsert()">등록</button>
+        </div>
+    </div>
+    
+    <script>
+        /* 페이지 로딩시 바로 실행되는 부분 */
+        const a = 1;
+        const b = 2;
+
+        const c = [21,26,43,54]; // 배열
+        console.log(c[2]); //0번부터 시작하기 때문에 43이 출력됨. 
+
+        /* 배열 */
+        // const ip = [ <input>, <input>, <input> ]
+        const ip = document.getElementsByClassName('input');
+        const img = document.getElementById('img');
+
+
+        //const e.files = {0: File, length: 1}
+        //const e.files = {length: 0}
+   
+   
+        /* 이미지가 변경될 때 실행되는 부분 */
+        function handleImage( e ) {
+            console.log( e.files ); 
+            console.log( e.files.length ); //e.files['length']
+            
+            //첨부한 상태
+            if(e.files.length > 0){
+                console.log(e.files[0]); //e.files.0 숫자라서 안됨.
+                img.src = URL.createObjectURL(e.files[0]);
+            }
+
+            //첨부 취소한 상태
+            else {
+                img.src = 'imgs/noimage.png'
+            }
+        };
+
+        /* 등록 버튼을 클릭했을 때 실행되는 부분 */
+        function handleInsert() {
+            if(ip[0].value === ''){
+                alert('물품명을 입력하세요.');
+                ip[0].focus();
+                return false;
+            }
+
+            if(ip[1].value === ''){
+                alert('가격을 입력하세요.');
+                ip[1].focus();
+                return false;
+            }
+
+            if(ip[2].value === ''){
+                alert('수량을 입력하세요.');
+                ip[2].focus();
+                return false;
+            }
+        };
+    </script>
+</body>
+
+</html>

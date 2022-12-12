@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>물품목록</title>
+    <style>
+        .container {
+            width     : 800px;
+            border    : 1px solid #cccccc;
+            margin    : 0px auto;
+            padding   : 30px; 
+        }
+
+        table {
+            width   : 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" style="text-align: center;">
+        <h3>물품목록</h3>
+        <hr />
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>물품번호</th>
+                    <th>물품명</th>
+                    <th>가격</th>
+                    <th>수량</th>
+                    <th>이미지</th>
+                    <th>이미지 등록일</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <tr>
+                    <td>1</td>
+                    <td>오렌지</td>
+                    <td>5000</td>
+                    <td>1</td>
+                    <td><img src = 'imgs/orange.jpg' height="100px"/></td>
+                    <td>2022-12-12</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>    
+
+    <script>
+        const obj = {
+            no      : 2 ,
+            title   : '망고' ,
+            price   : 12000 , 
+            quantity : 3 , 
+            img : "<img src = 'imgs/mango.png' height='100px' />" ,
+            regdate : '2022-12-12'          
+        }
+        console.log(obj);
+
+        const tb = document.getElementById('tbody');
+
+        tb.innerHTML +=
+                '<tr>' +
+                    `<td>${obj.no}</td>` +
+                    `<td>${obj.title}</td>` +
+                    `<td>${obj.price}</td>` +
+                    `<td>${obj.quantity}</td>` +
+                    `<td>${obj.img}</td>` +
+                    `<td>${obj.regdate}</td>` +
+                '</tr>';
+
+    </script>
+
+</body>
+
+</html>
