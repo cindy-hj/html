@@ -45,6 +45,15 @@
     <script>
         const tbody = document.getElementById('tbody');
 
+        async function handleHit(f) {
+            const url = `http://1.234.5.158:23000/board101/updatehit.json?no=${f}`;
+            const headers = {"Content-Type":"application/json"};
+            const body = {}; 
+            const {data} = await axios.put(url, body, {headers});
+           
+            window.location.href=`/boardone2.html?no=${f}`;
+        }
+
 
         async function onMounted() {
             const url =`http://1.234.5.158:23000/board101/select.json?page=1&text=`;
@@ -58,7 +67,7 @@
                     tbody.innerHTML +=
                     `<tr>` +
                         `<td>${tmp._id}</td>`+
-                        `<td><a href='/boardone2.html?no=${tmp._id}'>${tmp.title}</a></td>`+
+                        `<td><a href='#' onclick='handleHit(${tmp._id})'>${tmp.title}</a></td>`+
                         `<td>${tmp.writer}</td>`+
                         `<td>${tmp.hit}</td>`+
                         `<td>${tmp.regdate}</td>`+
