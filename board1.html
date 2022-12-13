@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판목록</title>
+    <style>
+        .container {
+            width   : 800px;
+            margin  : 0px auto;
+            padding : 10px;
+            border  : 3px solid #cccccc;
+        }
+
+        table {
+            width: 100%;
+            background-color: rgba(254, 255, 201, 0.753);
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h3>게시판목록</h3>
+        <a href="/boardwrite1.html"><button>게시판글쓰기</button></a>
+        <hr />           
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>조회수</th>
+                    <th>날짜</th>
+                </tr>
+            </thead>
+
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
+    
+    <script src="js/axios.min.js" type="text/javascript"></script>
+    <script>   
+        // 위에 내용을 추가할 태그 연결하기
+        const tbody = document.getElementById('tbody');
+        // console.log(tbody);
+
+        // 조회수 증가용 함수
+        // ex) function 함수명( 받고싶은 값 ) { }
+        async function handleHit(e) {
+            // alert(e);
+            // 조회수를 1 증가시키고 
+            const url = `http://1.234.5.158:23000/board101/updatehit.json?no=${e}`;
+            const headers = {"Content-Type":"application/json"};
+            const body = {}; //전달할 내용 없어도 {} 빈 객체 만들어야 함. 굳이 바디 안만들고 밑에 바디 대신 {} 넣어도됨.
+            const {data} = await axios.put(url, body, {headers});
+            //성공하면 이동해야됨->a태그로 바로 이동하면 안됨!
+            window.location.href=`/boardone1.html?no=${e}`;
+        }
+
+        // 함수는 자동실행되지 않음, 호출을 해야 수행됨.
+        //목록을 가져오는 함수
+        async function onMounted() {
+            const url = `http://1.234.5.158:23000/board101/select.json?page=1&text=`;
+            const headers = {"Content-Type":"application/json"};
+            
+            // data.statuss => 200 이면 정상, -1 비정상 데이터
+            // 백엔드를 호출하고 결과받기
+            // { data }는 response.data와 같은 기능
+            const { data } = await axios.get(url, {headers});
+            console.log(data)
+
+            // 기다리지 않으면 백엔드에서 오는 값이 없음!
+            // console.log(data);
+
+            if(data.status === 200) {
+                // tbody태그에 내용을 추가
+                // const data.rows = [{},{},{}...{}]
+                for(let tmp of data.rows) {
+                   // console.log(tmp);
+                    tbody.innerHTML +=
+                    `<tr>` +
+                        `<td>${tmp._id}</td>`+
+                        `<td><a href='#' onclick='handleHit(${tmp._id})'>${tmp.title}</a></td>`+ //a태그이긴 한데 이동은 못해, 확인해야하므로. 대신 번호를 전달->핸들히트e로
+                        `<td>${tmp.writer}</td>`+
+                        `<td>${tmp.hit}</td>`+
+                        `<td>${tmp.regdate}</td>`+
+                    `</tr>`
+                }
+            }
+            else {
+                alert('서버 오류');
+            }
+        }
+
+        // 함수를 호출함.
+        onMounted();
+    
+    </script>
+</body>
+</html>
