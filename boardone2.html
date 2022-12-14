@@ -4,9 +4,71 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>게시판 내용</title>
+    <style>
+        .container {
+            width   : 800px;
+            margin  : 0px auto;
+            padding : 10px;
+            border  : 3px solid #cccccc;
+        }   
+    </style>
+
 </head>
+
 <body>
+    <div class="container">
+        <h3>게시물 내용</h3>
+        <hr />
+
+        <div id="div"></div>
+
+        <a href="/board2.html"><button>목록</button></a>
+        <button>수정</button>
+        <button>삭제</button>
+        <button>이전글</button>
+        <button>다음글</button>
+    </div>   
     
+    <script src="js/axios.min.js" type="text/javascript"></script>
+    <script>
+        //어디에 넣는건지 먼저 생각하고 찾아서 상수로 잡아
+        const div = document.getElementById('div');
+        
+        const href = new URL(window.location);
+        const no = href.searchParams.get('no');
+        //no는 각각의 게시글에 부여한 id. no를 이용해야 게시글이 구분되므로 각각의 내용을 불러올 수 있다. 그래서 no를 불러낸것. 
+        //console.log(no); 잘 불렀는지 확인한것.
+
+        if(no === null) {
+                alert('잘못된 접근입니다.');
+                window.location.href="/board2.html";
+        }
+
+        //no를 잘 불러왔으니 이제 해당 no에 해당하는 게시글 내용을 불러오자.
+        async function handleData() {
+            const url = `http://1.234.5.158:23000/board101/selectone.json?no=${no}`;
+            const headers = {"Content-Type":"application/json"}
+            const { data } = await axios.get(url, {headers});
+            // console.log(data); 데이터 잘 받아왔구나 확인.
+
+            //데이터 잘 받아왔으니 이제 div에 입력해보자.
+            //잘 받아온 값만 입력되도록 
+            if(data.status === 200) {
+                div.innerHTML +=
+                `<p>글제목  :   ${data.result.title}</p>` +
+                `<p>글내용  :   ${data.result.content}</p>` +
+                `<p>작성자  :   ${data.result.writer}</p>` +
+                `<p>작성일  :   ${data.result.regdate}</p>` +
+                `<p>조회수  :   ${data.result.hit}</p>`;
+                //테이블이 아닌 개개의 값은 p태그로 받는다.  
+            }
+        }
+
+        handleData();
+
+    </script>
 </body>
+
 </html>
