@@ -84,7 +84,7 @@
                 quill.root.focus();
                 return false;
             }
-            if(writer.value === '') {
+            if(writer.value.length <=0) {
                 alert('작성자를 입력하세요.');
                 writer.focus();
                 return false;

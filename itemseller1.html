@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>판매자 물품관리</title>
+    <style>
+    .container {
+        margin  : 2px;
+        border  : 3px solid #cccccc;
+    }
+
+    header {
+        background-color: rgb(255, 247, 176);
+        text-align      : center;
+        padding         : 20px;
+        color           : rgb(195, 0, 255);
+    }
+    
+    footer {
+        background-color: rgb(195, 0, 255);
+        text-align      : center;
+        padding         : 20px;
+        color           : rgb(255, 247, 176);
+    }
+
+    table {
+        width          : 100%;
+        border-collapse: collapse;
+        padding: 10px;
+        background-color: rgba(255, 247, 213, 0.514);
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h3>header 영역</h3>
+        </header>
+
+        <section>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>물품사진</th>
+                        <th>물품명</th>
+                        <th>물품설명</th>
+                        <th>가격</th>
+                        <th>수량</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+        </section>
+
+        <footer>
+            <h3>footer 영역</h3>
+        </footer>
+    </div>
+
+    <script src="js/axios.min.js" type="text/javascript"></script>
+    <script> 
+    const tbody = document.getElementById('tbody');
+    console.log(tbody);
+
+    async function handleData() {
+        const url = `http://1.234.5.158:23000/item101/selectlist.json`;
+        const headers = {"Content-type":"application/json"};
+        const { data } = await axios.get(url, {headers});
+        console.log(data);
+
+        if(data.status === 200) {
+            for(let tmp of data.result) {
+                console.log(tmp);
+                tbody.innerHTML +=
+                 `<tr>` +
+                    `<td><img src="${tmp.img}" style="height: 150px"></td>` +
+                    `<td>${tmp.name}</td>` +
+                    `<td>${tmp.content}</td>` +
+                    `<td>${tmp.price}</td>` +
+                    `<td>${tmp.quantity}</td>` +
+                `</tr>` ;
+            }
+        }
+    }
+    handleData();
+    </script>
+</body>
+</html>

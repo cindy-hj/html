@@ -69,11 +69,12 @@
             // data.statuss => 200 이면 정상, -1 비정상 데이터
             // 백엔드를 호출하고 결과받기
             // { data }는 response.data와 같은 기능
+            // 기다리지 않으면 백엔드에서 오는 값이 없음!
+        
             const { data } = await axios.get(url, {headers});
             console.log(data)
 
-            // 기다리지 않으면 백엔드에서 오는 값이 없음!
-        
+            
 
             if(data.status === 200) {
                 // tbody태그에 내용을 추가

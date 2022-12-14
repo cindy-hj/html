@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>물품등록</title>
+    <style>
+        .container {
+            width   : 800px;
+            margin  : 2px;
+            border  : 3px solid #cccccc;
+        }
+
+        header {
+            background-color: rgb(255, 247, 176);
+            text-align      : center;
+            padding         : 20px;
+            color           : rgb(195, 0, 255);
+        }
+
+        footer {
+            background-color: rgb(195, 0, 255);
+            text-align      : center;
+            padding         : 20px;
+            color           : rgb(255, 247, 176);
+        }
+
+        section {
+            display              : grid;
+            grid-template-columns: 150px auto;
+        }
+
+        nav {
+            padding         : 20px;
+            background-color: rgba(233, 187, 255, 0.377);
+        }
+
+        article {
+            padding         : 30px;
+            background-color: rgba(255, 246, 164, 0.397);
+
+        }
+
+        .lbl {
+           margin   : 10px ; 
+           display  : inline-block ;
+           width    : 100px ;
+        }
+
+        ul {
+            list-style-type : none;
+            padding : 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: rgb(40, 0, 85);
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h3>판매자 페이지</h3>
+        </header>
+
+        <section>
+            <nav>
+                <ul>
+                    <li><a href="/iteminsert1.html">물품등록</a></li>
+                    <li><a href="/itemseller1.html">물품목록</a></li>
+                </ul>
+            </nav>
+
+            <article>
+                <div>
+                    <label class="lbl">물품명</label>
+                    <input type="text" id="name" placeholder="물품명을 입력하세요." />
+                </div>
+
+                <div>
+                    <label class="lbl">물품설명</label>
+                    <textarea rows="6" id="content" cols="22" style="resize: none;" placeholder="물품설명을 입력하세요."></textarea>
+                </div>
+                
+                <div>
+                    <label class="lbl">가격</label>
+                    <input type="number" id="price" value="1" />
+                </div>
+                
+                <div>
+                    <label class="lbl">수량</label>
+                    <input type="number" id="quantity" value="1" />
+                </div>
+                
+                <div>
+                    <label class="lbl">이미지</label>
+                    <input type="file" id="file" onchange="handleImage(this)" />
+                </div>
+
+                <div>
+                    <label class="lbl"></label>
+                    <button onclick="handleInsert()">등록하기</button>
+                    <button>홈으로</button>
+                </div>
+            </article>
+        </section>
+        
+        <footer>
+            <h3>footer 영역</h3>
+        </footer>
+
+    </div>
+
+    <script src="js/axios.min.js" type="text/javascript"></script>
+    <script>
+
+        // 공통영역
+        const name = document.getElementById('name');
+        const content = document.getElementById('content');
+        const price = document.getElementById('price');
+        const quantity = document.getElementById('quantity');
+        const file = document.getElementById('file');
+
+
+        // 함수
+        async function handleInsert() {
+            const url = `http://1.234.5.158:23000/item101/insert.json`;
+            // 이미지 없음 => const headers = {"Content-Type":"application/json"};
+            const headers = {"Content-Type":"multipart/form-data"};
+            
+            const body = new FormData();
+            body.append("name", name.value);
+            body.append("content", content.value);
+            body.append("price", price.value);
+            body.append("quantity", quantity.value);
+            body.append("image", file.files[0]);
+            console.log('입력한 물품명', name.value);
+            console.log('입력한 이미지', file.files[0]);
+
+            const { data } = await axios.post( url, body, {headers} );
+            console.log(data);
+            if(data.status === 200) {
+                alert('등록되었습니다.');
+                window.location.href='/itemlist1.html';
+            }
+
+        }
+
+
+        function handleImage( e ) {
+            console.log(e.files);
+
+            if(e.files.length >0 ) {
+                // 사진 보이는 url
+            }
+            else {
+                img.src = 'imgs/noimage.png'
+            }
+        }
+         
+    </script>
+
+</body>
+</html>

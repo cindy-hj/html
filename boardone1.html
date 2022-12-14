@@ -24,11 +24,10 @@
         <!-- 여기에다가 백엔드에서 받은 데이터를 넣기 위해서 id를 지정한것. -->
 
         <a href="/board1.html"><button>목록</button></a>
-        <button>수정</button>
-        <button>삭제</button>
-        <button>이전글</button>
-        <button>다음글</button>
-
+        <button onclick="handleUpdate()">수정</button>
+        <button onclick="handleDelete()">삭제</button>
+        <button onclick="handlePrev()">이전글</button>
+        <button onclick="handleNext()">다음글</button>
     </div>
 
     <script src="js/axios.min.js" type="text/javascript"></script>
@@ -51,19 +50,71 @@
             window.location.href="/board1.html";
         }
 
+        // 함수 외부에 있는 변수, 모든 함수에서 사용가능함!
+        // const a=13;  a는 13으로 계속 사용해야함, 못바꿈 -> 상수
+        // let b=14;    b는 초기값이 14고 게속 바꿔서 사용가능함 -> 변수
+        let prev;
+        let next;
+
+        function handleUpdate() {
+            // 수정할 수 있는 화면으로 전환함.
+            window.location.href=`/boardupdate1.html?no=${no}` ;
+        }
+        
+        async function handleDelete() {
+            const result = confirm('삭제할까요?');
+            console.log(result); // true, false
+            if(result === true) { // 확인버튼을 클릭한 경우
+                const url = `http://1.234.5.158:23000/board101/delete.json?no=${no}`;
+                const headers = {"Content-Type":"application/json"};
+                const body = {};
+                const {data} = await axios.delete(url, {headers:headers, data:body});
+                console.log(data);
+                if(data.status === 200) {
+                    alert('삭제 되었습니다.');
+                    window.location.href="/board1.html";
+                }
+            }
+        }
+
+        function handlePrev() {
+            // 주소를 바꾸고 엔터키 누름
+            if(prev !== 0) {
+                window.location.href=`/boardone1.html?no=${prev}`;
+            }
+            else {
+                alert('이전글이 없습니다.');
+            }
+        }
+
+        function handleNext() {
+            // 주소를 바꾸고 엔터키 누름
+            if(next !== 0) {
+                window.location.href=`/boardone1.html?no=${next}`;
+            }
+            else {
+                alert('다음글이 없습니다.');
+            }
+        }
+
         // 함수 생성, 자동호출되지 않음
         async function handleData() {
             const url = `http://1.234.5.158:23000/board101/selectone.json?no=${no}`; //변수가 들어가야 각기 다른 글을 클릭했을때 구분 가능
             const headers = {"Content-Type":"application/json"} ;
             const { data } = await axios.get( url, {headers} ) //글목록이라 get. 아까 글쓰기는 post였고 body가 포함됨. 이런건 만든사람이 정해놓은것. 이해 하려고 하기 보다는 잘 갖다 쓴다 생각.
+            
+            //1개의 게시물 정보, 이전글 번호, 다음글 번호
             console.log(data);
             if(data.status === 200) {
-                div.innerHTML += 
-                `<p>글번호 : ${data.result._id}</p>` +
-                `<p>글제목 : ${data.result.title}</p>` +
-                `<p>글내용 : ${data.result.content}</p>` +
-                `<p>작성자 : ${data.result.writer}</p>` +
-                `<p>조회수 : ${data.result.hit}</p>`;
+                    div.innerHTML += 
+                    `<p>글번호 : ${data.result._id}</p>` +
+                    `<p>글제목 : ${data.result.title}</p>` +
+                    `<p>글내용 : ${data.result.content}</p>` +
+                    `<p>작성자 : ${data.result.writer}</p>` +
+                    `<p>조회수 : ${data.result.hit}</p>`;
+                //다른 함수에서 사용하기 위해서 외부 변수에 저장함.
+                prev = data.prevNo;
+                next = data.nextNo;
             }
         }
 
