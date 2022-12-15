@@ -20,21 +20,32 @@
         color               : blueviolet;
     }
 
-/* section */
+/* section 2단형*/
     section {
         display                 : grid;
         grid-template-columns   : 7fr 3fr;
     }
+
+/* section1 중앙형*/
+    section1 {
+        /* 디스플레이를 안넣으니 모양이 안잡힘 */
+        display: grid; 
+        width : 600px; 
+        margin : 0px auto;
+    }    
+
 /* sidebar_a */
     .s_a {
         border  : 1px solid #000000;
-        margin  : 20px;
+        display : grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-auto-rows: minmax(200px auto);
     }
 
 /* sidebar_b */
     .s_b {
         border  : 1px solid red;
-        margin  : 20px;
+        padding-top: 30px;
     }
 
 /* item */
@@ -42,7 +53,6 @@
        border   : 1px solid blue;
        margin   : 10px 20px;
     }
-
 
 /* lbl */
     .lbl {
