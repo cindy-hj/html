@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메인화면</title>
+    <style>
+        .container {
+            width: 900px;
+            margin  : 0px auto;
+            border  : 1px solid #cccccc;
+            background-color: #fafafa;
+        }
+        header{
+            background-color : rgb(254, 255, 209);
+            text-align       : center;
+            padding          : 30px;
+            color            : rgb(255, 208, 0);
+        }
+        footer{
+            background-color : rgb(255, 239, 209);
+            text-align       : center;
+            padding          : 30px;
+            color            : #ca7900d7;
+        }
+        section{
+            display: grid;
+            grid-template-columns: 200px auto 100px;
+        }
+        nav{
+            padding : 20px;
+            border : 1px solid #cccccc ;
+        }
+        article{
+            border : 1px solid #cccccc ;
+        }
+        side{
+            border : 1px solid #cccccc ;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            header 
+        </header>
+
+        <section>
+            <nav>
+                <div>
+                    <a href="/board1.html">게시판목록</a>
+                </div>    
+                <div id="menu1">
+                    <h3>로그인 전의 메뉴</h3>
+                    <a href="/join1.html">회원가입</a>
+                    <a href="/login1.html">로그인</a>
+                </div>
+                <div id="menu2">
+                    <h3>로그인 후의 메뉴</h3>
+                    <a href="/logout1.html">로그아웃</a>
+                </div>        
+            </nav>
+            <article>
+
+            </article>
+            <side>
+
+            </side>
+        </section>
+
+        <footer>
+            footer 
+        </footer>
+
+       
+    </div>
+    <script>
+        const menu1 = document.getElementById('menu1');
+        const menu2 = document.getElementById('menu2');
+       
+        // 세션스토리지에서 내용가져오기
+        // 토큰(사용자인증)이 있으면 토큰정보가 표시, 없으면 null
+        const token = sessionStorage.getItem('TOKEN');
+        console.log(token);
+
+        if(token === null) { // 로그인 되지 않음
+            menu1.style.display = "block";
+            menu2.style.display = "none";
+        }
+        else { // 로그인 되었음
+            menu1.style.display = "none";
+            menu2.style.display = "block";
+        }
+    </script>
+</body>
+
+</html>

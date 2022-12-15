@@ -24,12 +24,15 @@
         padding         : 20px;
         color           : rgb(255, 247, 176);
     }
+    /* 쪼갤게 아니기 때문에 사실 없어도됨. */
+    section {
+        background-color: rgb(255, 253, 240);
+    }
 
     table {
         width          : 100%;
         border-collapse: collapse;
         padding: 10px;
-        background-color: rgba(255, 247, 213, 0.514);
     }
     </style>
 </head>
@@ -44,11 +47,14 @@
             <table border="1">
                 <thead>
                     <tr>
+                        <th>물품번호</th>
                         <th>물품사진</th>
                         <th>물품명</th>
                         <th>물품설명</th>
                         <th>가격</th>
                         <th>수량</th>
+                        <th>등록날짜</th>
+                        <th width="100px">버튼</th>
                     </tr>
                 </thead>
                 <tbody id="tbody"></tbody>
@@ -62,26 +68,99 @@
 
     <script src="js/axios.min.js" type="text/javascript"></script>
     <script> 
-    const tbody = document.getElementById('tbody');
-    console.log(tbody);
 
-    async function handleData() {
-        const url = `http://1.234.5.158:23000/item101/selectlist.json`;
-        const headers = {"Content-type":"application/json"};
-        const { data } = await axios.get(url, {headers});
-        console.log(data);
+        //공통영역, 자동실행
+        const tbody = document.getElementById('tbody');
+        console.log(tbody);
 
-        if(data.status === 200) {
-            for(let tmp of data.result) {
-                console.log(tmp);
-                tbody.innerHTML +=
-                 `<tr>` +
-                    `<td><img src="${tmp.img}" style="height: 150px"></td>` +
-                    `<td>${tmp.name}</td>` +
-                    `<td>${tmp.content}</td>` +
-                    `<td>${tmp.price}</td>` +
-                    `<td>${tmp.quantity}</td>` +
-                `</tr>` ;
+        //함수는 자동호출 안됨 -> 그래서 위치 상관없음!
+
+        const handleUpdate = async(no, idx) => { // 호출한 곳에서 번호와 위치가 필요 
+            // 번호는 input으로 받은게 아니라서 위치와 달리 수정시 이용할 수 없다. url에 필요한것. 위치는 최근 게시물 부터 0,1,2..
+            // 태그 연결하기
+            // class로 설정했으므로 [<input><input>...<input>] -> 전체중에 수정을 원하는 한줄만 필요함!
+            // 함수가 붙을때만 필요해서 함수안에 넣음
+            const name      = document.getElementsByClassName('name');
+            const content   = document.getElementsByClassName('content');
+            const price     = document.getElementsByClassName('price');
+            const quantity  = document.getElementsByClassName('quantity');
+            if(confirm('수정할까요?')) {
+                const url =`http://1.234.5.158:23000/item101/update.json?no=${no}`; // 번호 필요
+                const headers = {"Content-Type":"application/json"}
+                const body = {
+                    name : name[idx].value, // 수정하려고 하는 상품의 위치가 필요. 아니면 다른 물품까지 수정되버리잖아! 이걸 여기서 받아서 함수의 ()에 넣어줘야함.
+                    content : content[idx].value,
+                    price : price[idx].value, 
+                    quantity : quantity[idx].value
+                }
+                const { data } = await axios.put(url, body, {headers});
+                console.log(data);
+                if (data.status === 200) {
+                    window.location.href="/itemseller1.html";
+                }
+            }
+        }
+
+        const handleDelete = async(no) => { // 밑에서 onclick 뒤에 받은 ${data.result[i]._id} 정보를 no로 받은것
+            console.log(no);
+            if(confirm('삭제할까요?')) { // const result=confirm('삭제할까요?') 하고 if(result === true)를 한줄로 표현한것
+                const url = `http://1.234.5.158:23000/item101/delete.json?no=${no}`; 
+                // 게시글 삭제는 item이 아니라 board였음.. 활용할 생각 말고 올라와있는것 쓰기
+                const headers = {"Content-Type":"application/json"};
+                const body = {}
+                const { data } = await axios.delete(url, {headers:headers, data:body});  
+                console.log('handleDelete', data);
+                if(data.status === 200) {
+                    window.location.href="itemseller1.html";  
+                }
+            }
+        }
+
+        //function handleData()
+        //const handleData = async() => {} 
+        //위 두줄 같은것 
+        const handleData = async() => { 
+            const url = `http://1.234.5.158:23000/item101/selectlist.json`;
+            const headers = {"Content-type":"application/json"};
+            // 객체 {key:value}
+            // {headers:headers} == {a:a} 이게 원래 모양, headers도 원래 object
+            const { data } = await axios.get(url, {headers});
+            console.log('handleData', data);
+            //원래는 const response
+            //console.log(response.data)
+            //모든 프레임 워크는 이런 형식으로 같음... const {data} 라인이 백엔드 호출 후 기다렸다가 다시 받는거 까지 하는거임.
+
+            if(data.status === 200) {
+                console.log(data.result) // 필요한 값 result이므로 확인 먼저!, 배열인지 아닌지도 모르잖어. 형태 확인도 해야한다.
+            
+                // forEach
+                // ex) [{0},{1}...{20}] => 길이는 21
+                // for(let tmp of data.result) { <<숫자가 필요 없을때
+                //     console.log(tmp)
+                // }
+
+                // for
+                // const arr=[34,556,223] => arr[0], arr[1], arr[2]
+                for(let i=0; i<data.result.length; i++) { // 처음부터 거짓이면 한번도 안돌아감. tmp에 복사되고 있는게 아니라 숫자만 증가하는중.
+                    console.log(i, data.result[i]); //숫자를 알수 있기 때문에 좋음. 몇번째꺼의 데이터를 찍어라가 가능해짐. 찍는 위치를 알수 있다.
+                    tbody.innerHTML +=
+                     `<tr>` +
+                        `<td>${data.result[i]._id}</td>` + // data.result[i]가 원래 사용하던 tmp인것
+                        `<td><img src="${data.result[i].img}" style="height: 80px" /></td>` +
+                        `<td><input type="text" class="name" value="${data.result[i].name}" /></td>` +
+                        // 물품명.. 등 여러개를 받아야 하므로 class로 받으므
+                        `<td><textarea rows="4" class="content" width="100%">${data.result[i].content}</textarea></td>` +
+                        `<td><input type="number" class="price" value="${data.result[i].price}" style="width:150px" /></td>` + 
+                        `<td><input type="number" class="quantity" value="${data.result[i].quantity}" style="width:50px" /></td>` +
+                        `<td>${data.result[i].regdate}</td>` +
+                        `<td>` +
+                            `<button onclick="handleUpdate(${data.result[i]._id}, ${i})">수정</button>` + 
+                            // 수정 화면 따로 만들면 불편. 이 화면에서 바로 수정하고 수정 버튼 누르면 수정되도록 만들고 싶다.
+                            // 번호와 위치를 동시에 받음
+                            `<button onclick="handleDelete(${data.result[i]._id})">삭제</button>` + 
+                            // 버튼 누를때 어떤 정보를 받아야하는지 알려줘야한다. 번호가 필요하다. 함수를 호출하는 곳에서 정보를 전달해줘야한다.
+                            `</td>` ;
+                     `</tr>` ;
             }
         }
     }

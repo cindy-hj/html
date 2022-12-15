@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그아웃</title>
+</head>
+<body>
+    
+    <script>
+        if(confirm('로그아웃할까요?')) {
+            // 세션 스토리지에 토큰정보 지우기
+            sessionStorage.removeItem('TOKEN');
+        }
+        // 다시 메인화면으로 이동하기
+        window.location.href="/main1.html"
+    </script>
+</body>
+</html>

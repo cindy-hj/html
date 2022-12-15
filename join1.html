@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <style>
+        .container {
+            width: 800px;
+            border: 1px solid #cccccc;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgb(254, 255, 219);
+        }
+        .item {
+            margin: 10px;
+        }
+        .lbl {
+            display : inline-block;
+            width   : 100px;
+            margin  : 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h3>회원가입</h3>
+        <hr />
+
+        <div class="item">
+            <label class="lbl">아이디</label>
+            <input type="text" onkeyup="handleIDCheck()" id="id" placeholder="아이디를 입력하세요." autofocus/>
+            <!-- 실시간으로 아이디 중복 확인. 키를 눌렀다가 뗄때! -->
+            <label class="lbl" id="check">중복확인</label>
+            
+        </div>
+   
+        <div class="item">
+            <label class="lbl">암호</label>
+            <input type="password" id="pw" placeholder="비밀번호를 입력하세요." />
+        </div>
+  
+        <div class="item">
+            <label class="lbl">암호 확인</label>
+            <input type="password" id="pw1" placeholder="비밀번호를 다시 입력하세요." />
+        </div>
+  
+        <div class="item">
+            <label class="lbl">이름</label>
+            <input type="text" id="name" placeholder="이름을 입력하세요." />
+        </div>
+ 
+        <div class="item">
+            <label class="lbl">이메일</label>
+            <input type="text" id="email"placeholder="이메일을 입력하세요." />
+            <label>@</label>
+            <select id="email1" >
+                <option>이메일 주소 선택</option>
+                <option>naver.com</option>
+                <option>google.com</option>
+                <option>daum.net</option>
+            </select>
+        </div>
+ 
+        <div class="item">
+            <label class="lbl">나이</label>
+            <input type="number" id="age" placeholder="나이를 입력하세요." value="0"/>
+        </div>
+
+        <hr />
+
+        <div class="item">
+            <label class="lbl"></label>
+            <button onclick="handleJoin()">회원가입</button>
+            <a href="/main1.html"><button>홈으로</button></a>
+        </div>
+    </div>
+
+    <script src="js/axios.min.js" type="text/javascript"></script>
+    <script>
+        const id = document.getElementById('id');
+        const check = document.getElementById('check');
+        const pw = document.getElementById('pw');
+        const pw1 = document.getElementById('pw1');
+        const name = document.getElementById('name');
+        // id로 설정한 것들은 고유하므로 따로 상수로 선언하지 않아도 인식된다.
+        // 그런데 왜 name은 오류가 뜰까? name은 상수 선언안하니 오류뜸..
+
+        // 전역변수, 함수 어디에서나 사용가능함.
+        let idcheck = 0;
+
+        const handleIDCheck = async() => {
+            if(id.value.length > 0) { 
+                const url = `http://1.234.5.158:23000/member101/idcheck.json?id=${id.value}`;
+                const headers ={"Content-Type":"application/json"};
+                const { data } = await axios.get(url, {headers});
+                console.log('handleIDCheck', data);
+                if(data.status === 200){
+                    if(data.result === 0) {
+                        check.innerHTML 
+                            = '<label style="color:green;">사용가능</label>';
+                            idcheck = 1;
+                    }
+                    else if(data.result === 1) {
+                        check.innerHTML 
+                            = '<label style="color:red;">사용불가</label>';
+                            idcheck = 0;
+                    }
+                }
+            }
+            else {
+                check.innerHTML = '중복확인';
+                idcheck = 0;
+            }
+        }
+
+        const handleJoin = async() => {
+            if (id.value.length <=0) { 
+                alert('아이디를 입력하세요.');
+                id.focus();
+                return false; // 함수종료
+            }
+            // 전역변수를 이용하여 아이디 중복 유무 확인하기
+            if(idcheck === 0) {
+                alert('아이디 중복 확인하세요.');
+                id.focus();
+                return false;
+            }
+            if (pw.value.length <=0) {
+                alert('비밀번호를 입력하세요.');
+                pw.focus();
+                return false;
+            } 
+            if (pw1.value.length <=0) {
+                alert('비밀번호를 다시 입력하세요.');
+                pw1.focus();
+                return false;
+            } 
+            // === 같다 !== 같지않다
+            if (pw.value !== pw1.value) {
+                alert('암호가 일치하지 않습니다.');
+                pw1.focus();
+                return false;
+            }
+            // 왜 여기서 안넘어가는거지? name을 위에서 상수로 선언하고 나니까 넘어감... 어딘가에서 name이 또 사용된건가?
+            if (name.value.length <=0 ) {
+                alert('이름을 입력하세요.');
+                name.focus();
+                return false;
+            }
+            if (email.value.length <=0) {
+                alert('이메일을 입력하세요.');
+                email.focus();
+                return false;
+            }
+            if (email1.value === '이메일 주소 선택') {
+                alert('이메일 주소를 선택하세요.');
+                email.focus();
+                return false;
+            }
+            if (age.value <= 0) {
+                alert('나이를 입력하세요.');
+                return false;
+            }
+            
+            // 유효성 검사 통과, 백엔드 연동할 위치
+            const url = `http://1.234.5.158:23000/member101/insert.json` ;
+            const headers = {"Content-Type":"application/json"} ;
+            const body = {
+                id: id.value,
+                pw: pw.value,
+                name: name.value,
+                email: email.value + "@" + email1.value, 
+                age: age.value
+            }  
+            const { data } = await axios.post(url, body, {headers});
+            console.log(data);
+            if(data.status === 200) {
+                alert('회원 가입 성공!')
+                window.location.href="/main1.html";
+            }
+        }
+    </script>
+</body>
+
+</html>

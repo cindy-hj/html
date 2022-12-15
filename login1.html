@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <style>
+        .container {
+            width           : 900px;
+            margin          : 0px auto;
+            border          : 1px solid #cccccc;
+            background-color: #fafafa;
+        }
+        header {
+            background-color : rgb(254, 255, 209);
+            text-align       : center;
+            padding          : 30px;
+            color            : rgb(255, 208, 0);
+        }
+        footer {
+            background-color : rgb(255, 239, 209);
+            text-align       : center;
+            padding          : 30px;
+            color            : #ca7900d7;
+        }
+        .item{
+            margin  : 10px;
+            padding : 10px;
+        }
+        .lbl{
+            display : inline-block;
+            width  : 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>header</header>
+
+        <div class="item">
+            <label class="lbl">아이디</label>
+            <input type="text" id="id" placeholder="아이디를 입력하세요." autofocus/>
+        </div>
+
+        <div class="item">
+            <label class="lbl">암호</label>
+            <input type="password" id="pw" placeholder="비밀번호를 입력하세요." />
+        </div>
+
+        <div class="item">
+            <hr />
+            <label class="lbl"></label>
+            <button onclick="handleLogin()">로그인</button>
+            <a href="/main1.html"><button>홈으로</button></a>
+        </div>
+
+        <footer>footer</footer>
+
+        <script src="js/axios.min.js" type="text/javascript"></script>
+        <script>
+            const id = document.getElementById('id') ;
+            const pw = document.getElementById('pw') ;
+
+            const handleLogin = async() => {
+                if(id.value.length <=0 ) {
+                    alert('아이디를 입력하세요.')
+                    id.focus();
+                    return false;
+                }
+                if(pw.value.length <=0 ) {
+                    alert('비밀번호를 입력하세요.')
+                    pw.focus();
+                    return false;
+                }
+                
+                const url = `http://1.234.5.158:23000/member101/select.json`;
+                const headers = {"Content-Type":"application/json"} ;
+                const body = {
+                    id : id.value,
+                    pw : pw.value
+                }
+                const { data } = await axios.post(url, body, {headers});
+                console.log(data);
+                if(data.status === 200) {
+                    alert('로그인 되었습니다.')
+                    
+                    // main, join, login 이런 파일들은 서로 무슨일이 일어났는지 모른다.
+                    // 로그인에 성공했다면 그 상황을 나머지 파일들도 알아야 거기에 알맞는 화면을 내보낼 수 있다.
+                    // 창이 떠있는 동안 공통적으로 접근할수 있는게 필요-> 그게 storage. 저장소.
+                    // 크롬에서 f12 => >> => applicaion => storage
+                    // 세션스토리지에 로그인 했던 기록을 저장. 로그인 전후 화면이 달라지기 위해서는 기록이 저장되어야 함.
+                     // ex) 키는 TOKEN. 내마음대로
+                    sessionStorage.setItem("TOKEN", data.result);
+                    // 토큰이 result 값
+                    // 토큰은 시간이 정해져있음. 정해진 시간이 지나면 활용 할수 없다.
+
+                    // 로그인하고 토큰을 저장소에 보내놓으면 메인이 저장소에서 토큰을 가져와서 로그인 했는지 확인!
+                    // sessionStorage.getItem()
+
+                    // 세션스토리지의 내용 지우기(로그아웃에서 해야함)
+                    // sessionStorage.removeItem("TOKEN");
+                    
+                    window.location.href="/main1.html";
+                }
+                else{
+                    alert('아이디 또는 비밀번호를 확인하세요.')
+                }
+            }
+        </script>
+    </div>
+</body>
+
+</html>
