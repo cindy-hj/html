@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판2</title>
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <!-- 다른 사람 이 만든 css쓸때는 class 뭐 썼는지를 잘 살펴서 쓰기 -->
+</head>
+<body>
+    <div class="container" style="border:1px solid #cccccc;">
+        <h3>게시판</h3>
+
+        <div style="width: 400px;">
+            <div style="display:inline-block">
+                <input type="text" class="form-control form-control-sm" id="txt" onkeyup="handleKeyup()" placeholder="검색어"/>
+            </div>
+            <div style="display:inline-block">
+                <button class="btn btn-primary btn-sm" onclick="handleSearch()">검색</button>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성자</th>
+                <th scope="col">조회수</th>
+                <th scope="col">날짜</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+         
+        <div>
+            <nav aria-label="Page navigation example">
+                <!-- //3가지 클래스가 들어가 있는것. -->
+                <ul class="pagination justify-content-center pagination-sm" id="ul"></ul>
+            </nav>
+        </div>
+    </div>
+
+    <script src="js/axios.min.js" type="text/javascript"></script>
+    <script>
+        const ul = document.getElementById('ul');
+        const tbody = document.getElementById('tbody');
+        const txt = document.getElementById('txt');
+
+        // 주소창에 ?page=1 없으면
+        const href = new URL(window.location);
+        let page = href.searchParams.get("page"); 
+        // no 가져 왔던 방법이랑 동일하지만 page값이 없으면 1로 넣어줘야 하므로 상수가 아닌 변수 처리
+        console.log(page);
+        if(page === null) { 
+            page = 1;
+        }
+
+        let text = href.searchParams.get("text");
+        if(text === null) { 
+            text = '';
+        }
+
+        // 원래 화면에서 page=1&text= <==1페이지&전체가 보이는것. text뒤에 특정단어 쓰면 그단어만 검색된다.
+        // 원래 두개의 정보를 읽어서 화면을 구성하는것. 
+        // 뒤에 두개를 받아야함. 
+        // page 받아냄.
+        // text 도... 없으면 빈걸로
+
+        // 검색어 입력시 마다 호출
+        const handleKeyup = () => {
+            if(window.event.keyCode === 13) {
+                handleSearch()
+            }
+        }
+        // 엔터키로 검색할수있도록
+
+        // 검색어 입력 후 검색 버튼 클릭시 전역변수의 내용 바꿈
+        const handleSearch = async() => {
+            window.location.href=`/board3.html?page=1&text=${txt.value}`; 
+            // 검색결과는 1페이지에서 보이도록 & text의 값이 입력한 검색어로 바뀐것->주소를 바꾼 역할
+        }
+
+        const onMounted = async() => {
+            const url = `http://1.234.5.158:23000/board101/select.json?page=${page}&text=${text}`;
+            // 주소창에 있는걸 읽어온거임. 이미 위의 함수에서 주소창이 바뀌었고 그렇게 바뀐 현재 상태의 주소를 그대로 읽어온것!
+            const headers = {"Content-Type":"application/json"};
+            const { data } = await axios.get(url, {headers});
+            console.log(data) ; 
+            // rows로 목록
+            // total로 pagination
+
+            if(data.status === 200) {
+                const pages = Math.floor( (data.total -1 ) / 10 ) + 1 ; // 소숫점 버림.
+                console.log(pages);
+                for(let i=1; i<=pages; i++) { // 1부터 17까지
+                   ul.innerHTML += 
+                        `<li class="page-item"><a class="page-link" href="/board3.html?page=${i}&text=${text}">${i}</a></li>`;
+                        //검색어 포함 안시키면 페이지 번호 누르면 검색어가 풀림.
+                }
+                for(let tmp of data.rows) {
+                    tbody.innerHTML +=
+                        `<tr>` +
+                            `<th scope="row">${tmp._id}</th>` +
+                            `<td>${tmp.title}</td>` +
+                            `<td>${tmp.writer}</td>` +
+                            `<td>${tmp.hit}</td>` +
+                            `<td>${tmp.regdate}</td>` +
+                        `</tr>` ;
+                }
+            }
+        }
+        onMounted();
+
+    </script>
+</body>
+</html>

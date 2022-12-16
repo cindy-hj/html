@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 등록</title>
+<link href="css/style2.css" rel="stylesheet" />
+<link href="css/bootstrap.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h3>header</h3>
+        </header>
+        <section1>
+            <div class="item">
+                <label><h3>상품 등록</h3></label>
+            </div>
+            <hr />
+            <div class="item">
+                <label class="lbl">상품명</label>
+                <input type="text" class="insert" placeholder="상품명을 입력하세요." autofocus />
+            </div>
+            <div class="item">
+                <label class="lbl">상품설명</label>
+                <textarea rows="6" cols="28" style="resize: none;" class="insert" placeholder="상품설명을 입력하세요."></textarea>
+            </div>
+            <div class="item">
+                <label class="lbl">가격</label>
+                <input type="number" class="insert" value="0" />
+            </div>
+            <div class="item">
+                <label class="lbl">수량</label>
+                <input type="number" class="insert" value="0"/>
+            </div>
+            <div class="item">
+                <label class="lbl">이미지</label>
+                <img src="imgs/noimage.png" class="insert" style="width: 200px;"/>
+                <label class="lbl"><input type="file" onchange="handleImage(this)"/></label>
+            </div>
+            <div class="item">
+                <label class="lbl"></label>
+                <button onclick="handleInsert()">등록하기</button>
+                <a href="/main2.html"><button>홈으로</button></a>
+            </div>
+        </section1>
+        <footer>
+            <h3>footer</h3>
+        </footer>
+    </div>
+
+    <script src="js/axios.min.js" type="text/javascript"></script>
+    <script>
+        const insert = document.getElementsByClassName('insert');
+
+        const handleImage = (e) => {
+            console.log(e.files);
+            if(e.files.length === 1) {
+                insert[4].src = URL.createObjectURL(e.files[0]);
+            }
+            if(e.files.length === 0) {
+                insert[4].src = 'imgs/noimage.png'
+            }
+        }
+
+        const handleInsert = () => {
+            if(insert[0].value.length <=0 ) {
+                alert('상품명을 입력하세요.');
+                insert[0].focus();
+                return false;
+            }
+            if(insert[1].value.length <=0 ) {
+                alert('상품설명을 입력하세요.');
+                insert[1].focus();
+                return false;
+            }
+            if(insert[2].value <=0 ) {
+                alert('가격을 입력하세요.');
+                insert[2].focus();
+                return false;
+            }
+            if(insert[3].value <=0 ) {
+                alert('수량을 입력하세요.');
+                insert[3].focus();
+                return false;
+            }  
+        }
+
+    </script>
+
+</body>
+
+</html>

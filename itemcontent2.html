@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상세페이지</title>
+    <link href="css/style2.css" rel="stylesheet" />
+    <link href="css/itemcontent2.css" rel="stylesheet" />
+    <link href="css/bootstrap.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h3>header</h3>
+        </header>
+        <section2>
+            <div class="s_a" id="img"></div>
+        
+            <div class="s_b" id="content"></div>
+        </section2>
+        <footer>
+            <h3>footer</h3>
+        </footer>
+    </div>
+    
+    <script src="js/axios.min.js" type="text/javascript"></script>
+    <script>
+        const img = document.getElementById('img');
+        const content = document.getElementById('content');
+        
+        const href = new URL(window.location);
+        const no   = href.searchParams.get("no");
+        // console.log(no);
+
+
+        const handleContent = async() => {
+            const url = `http://1.234.5.158:23000/item101/selectone.json?no=${no}`;
+            const headers = {"Content-Type":"application/json"} ;
+            const { data } = await axios.get(url, {headers});
+            console.log(data);
+            if(data.status === 200){
+                img.innerHTML +=
+                    `<img src=${data.result.img} style="height : 400px" />` ;
+
+                content.innerHTML +=
+                    `<p>상품명     : ${data.result.name}</p>` +
+                    `<p>상품 설명  : ${data.result.content}</p>` +
+                    `<p>상품 가격  : ${data.result.price}</p>` +
+                    `<p>상품 수량  : ${data.result.quantity}</p>` +
+                    `<p>등록일     : ${data.result.regdate}</p>` +
+                    `<label class="item"><button>주문하기</button></label>` +
+                    `<a href="/main2.html"><label class="item"><button>홈으로</button></label></a>` ;
+            }
+        }
+
+        handleContent() ;
+    </script>
+
+</body>
+</html>

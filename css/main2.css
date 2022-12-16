@@ -1,0 +1,20 @@
+/* sidebar_a */
+.s_a {
+    border                  : 1px solid #000000;
+    display                 : grid;
+    grid-template-columns   : 1fr 1fr 1fr 1fr;
+    grid-auto-rows          : minmax(200px auto);
+}
+
+/* sidebar_b */
+.s_b {
+    border  : 1px solid red;
+    padding-top: 30px;
+}
+
+/* a */
+a {
+    text-decoration-color   : aliceblue;
+    text-decoration-line    : none;
+    padding                  : 2px;
+}

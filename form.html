@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form</title>
+    <style>
+        .container {
+            width   : 500px;
+            padding : 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+            아이디 <input type="text" id="id" />
+        </div>
+        
+        <div>
+            내용 <textarea rows="6" id="content"></textarea>
+        </div>
+        
+        <div>
+            <!-- checked 미리 선택 시켜놓음. name을 넣어서 그룹화해야한다. 그래야 n개 중에 하나만 선택가능 -->
+            <!-- on 을 남, 여로 출력하기 위해서 임의의 value값을 준것. -->
+            남 <input type="radio" name="gender" value="남" checked /> 
+            여 <input type="radio" name="gender" value="여" /> 
+            <button onclick="handleRadio()">결과보기</button>
+        </div>
+
+        <div>
+            A <input type="checkbox" name="info" value="A" />
+            B <input type="checkbox" name="info" value="B" />
+            C <input type="checkbox" name="info" value="C" />
+            D <input type="checkbox" name="info" value="D" />
+            <button onclick="handleCheck()">결과보기</button>
+        </div>
+
+        <div>
+            <select id="sel">
+                <!-- //value 안넣어도 동작하긴 하지만 결과값을 다르게 보고싶으면 설정해야하는것. -->
+                <option value="a1">1</option> 
+                <option value="a2">2</option>
+                <option value="a3">3</option>
+            </select>
+            <button onclick="handleSelect()">결과보기</button>
+        </div>
+
+        <div>
+            색상
+            <input type="color" id="color" />
+            <button onclick="handleColor()">결과보기</button>
+        </div>
+        
+        <div>
+            파일 : 여러개 선택 (ctrl키)
+            <input type="file" id="file" multiple /> 
+            <button onclick="handleFile()">결과보기</button>
+        </div>
+
+        <div>
+        <input type="date" id="date" min="2022-12-01" max="2022-12-16" />
+        <button onclick="handleDate()">결과보기</button>
+        </div>
+
+        <div>
+        <input type="range" id="ran" min="1" max="10" />
+        <button onclick="handleRange()">결과보기</button>
+        </div>
+
+        <div>
+        <input type="number" id="num" step="5" min="1" value="1"/>
+        <button onclick="handleNumber()">결과보기</button>
+        </div>
+    </div>
+
+    <script>
+        const handleDate = () => {
+            const date = document.getElementById('date') ;
+            console.log(date.value) ;
+        }
+
+        const handleRange = () => {
+            const ran = document.getElementById('ran') ;
+            console.log(ran.value) ;
+        }
+
+        const handleNumber = () => {
+            const num = document.getElementById('num') ;
+            console.log(num.value) ;
+        }
+
+        const handleFile = () => {
+            const file = document.getElementById('file');
+            console.log(file.files); // value는 파일 이름만 나옴, 파일은 files에 저장됨
+            // 배열형태로 예상해서 저장. 하나만 첨부해도 배열형태로 나온다. 
+            for(let tmp of file.files) {
+                console.log(tmp) ;
+            }
+        }
+
+        const handleColor = () => {
+            const color = document.getElementById('color') ;
+            //color.value = '#cccccc'; //색상 미리 선택
+            console.log(color.value);
+        }
+
+        const handleSelect = () => {
+            const sel = document.getElementById('sel') ;
+            console.log(sel.value);
+        }
+
+        const handleCheck = () => {
+            //[ <>, <>, <>, <> ]
+            const check = document.getElementsByName('info');
+            for(let tmp of check) { // 4번 반복
+                if (tmp.checked === true) {
+                    console.log(tmp.value);
+                }
+            }
+        }
+
+        const handleRadio = () => {
+            // gender => [ <input radio 남>, <input radio 여> ] 배열은 반복문 쓴다 생각!
+            const gender = document.getElementsByName('gender'); // id빼고는 다 복수형!
+            console.log(gender);
+            // gender[1].checked = true; // 수동으로 체크 상태를 바꾼것. 라디오의 상태를 바꿈. 두번째걸로.
+            for(let tmp of gender) {  // 2번 반복
+                // 1개씩 가져온 라디오의 체크상태 확인
+                if(tmp.checked === true) {  
+                    console.log(tmp.value); // 값을 출력
+                }
+            }
+        }
+
+        const id = document.getElementById('id');
+        id.value = 'aaa';      // input type에 입력한 내용 추가하기
+        console.log(id.value); // input type에 입력한 내용 가져오기
+        
+        const content = document.getElementById('content');
+        content.value = 'bbb';
+        console.log(content.value);
+    </script>
+</body>
+</html>

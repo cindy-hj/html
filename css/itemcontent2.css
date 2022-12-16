@@ -1,0 +1,12 @@
+/* sidebar_a */
+.s_a {
+    border                  : 1px solid #000000;
+    
+}
+
+/* sidebar_b */
+.s_b {
+    border  : 1px solid red;
+    padding-top: 30px;
+    width : 100%;
+}
